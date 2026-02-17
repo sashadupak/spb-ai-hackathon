@@ -95,7 +95,7 @@
       <h2 class="section__title">Хакатон нового <em>формата</em></h2>
       <p class="section__subtitle">Не соревнование ради победы, а среда, где разработчики и бизнес встречаются на одной задаче — и расходятся с результатом.</p>
     </div>
-    <div class="grid grid--3 gs-stagger" style="margin-bottom: 56px;">
+    <div class="grid grid--3 about-stats-grid gs-stagger" style="margin-bottom: 56px;">
       <div class="about-stat">
         <div class="about-stat__num">6</div>
         <div class="about-stat__label">реальных кейсов от компаний</div>
@@ -109,7 +109,7 @@
         <div class="about-stat__label">команд разработчиков</div>
       </div>
     </div>
-    <div class="grid grid--3 gs-stagger">
+    <div class="grid grid--3 benefit-grid gs-stagger">
       <div class="card">
         <div class="card__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v8M8 12h8"/></svg></div>
         <h3 class="card__title">Реальные задачи от бизнеса</h3>
@@ -171,7 +171,7 @@
       <h2 class="section__title">Над чем будут работать <em>команды</em></h2>
       <p class="section__subtitle">Конкретные компании и детали кейсов объявляются по мере подтверждения — направления уже определены.</p>
     </div>
-    <div class="grid grid--3 gs-stagger">
+    <div class="grid grid--3 cases-grid gs-stagger">
       <div class="case-card">
         <div class="case-card__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
         <h3 class="case-card__dir">Снизить нагрузку на поддержку в 3 раза</h3>
@@ -221,7 +221,7 @@
       <h2 class="section__title">Как будут <em>оцениваться</em> решения</h2>
       <p class="section__subtitle">Знайте правила игры заранее — чтобы строить решение, которое победит.</p>
     </div>
-    <div class="grid grid--3 gs-stagger">
+    <div class="grid grid--3 criteria-grid gs-stagger">
       <div class="criteria-card"><div class="criteria-card__num">01</div><h3 class="criteria-card__title">Техническая реализация</h3><div class="criteria-card__tags"><span class="criteria-card__tag criteria-card__tag--team">Качество кода и архитектура</span></div></div>
       <div class="criteria-card"><div class="criteria-card__num">02</div><h3 class="criteria-card__title">Бизнес-ценность</h3><div class="criteria-card__tags"><span class="criteria-card__tag criteria-card__tag--team">Расчёт эффекта</span><span class="criteria-card__tag criteria-card__tag--biz">Сколько сэкономит / ускорит</span></div></div>
       <div class="criteria-card"><div class="criteria-card__num">03</div><h3 class="criteria-card__title">Готовность к внедрению</h3><div class="criteria-card__tags"><span class="criteria-card__tag criteria-card__tag--team">Готовность к пилоту</span><span class="criteria-card__tag criteria-card__tag--biz">Можно забрать и внедрить</span></div></div>
@@ -240,28 +240,29 @@
       <h2 class="section__title">Кого мы <em>ждём</em></h2>
       <p class="section__subtitle">Узнайте себя — и поймите, с кем будете работать.</p>
     </div>
-    <div class="audience__grid audience__grid--centered gs-stagger">
-      <div class="audience-card">
+    <div class="audience__grid audience__grid--centered gs-stagger" id="audience-grid">
+      <div class="audience-card" data-desc="NLP, CV, генеративный AI на реальных бизнес-задачах">
         <div class="audience-card__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9 9h6M9 13h6M9 17h4"/></svg></div>
         <h4 class="audience-card__title">ML / AI</h4>
         <p class="audience-card__text">NLP, CV, генеративный AI на реальных бизнес-задачах</p>
       </div>
-      <div class="audience-card">
+      <div class="audience-card" data-desc="Продуктовые решения и интеграция AI-модулей">
         <div class="audience-card__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></div>
         <h4 class="audience-card__title">Backend / Full-stack</h4>
         <p class="audience-card__text">Продуктовые решения и интеграция AI-модулей</p>
       </div>
-      <div class="audience-card">
+      <div class="audience-card" data-desc="Расчёт эффекта и формулирование бизнес-ценности">
         <div class="audience-card__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div>
         <h4 class="audience-card__title">PM и аналитики</h4>
         <p class="audience-card__text">Расчёт эффекта и формулирование бизнес-ценности</p>
       </div>
-      <div class="audience-card">
+      <div class="audience-card" data-desc="AI-решения, понятные для людей">
         <div class="audience-card__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/><circle cx="11" cy="11" r="2"/></svg></div>
         <h4 class="audience-card__title">Дизайн и UX</h4>
         <p class="audience-card__text">AI-решения, понятные для людей</p>
       </div>
     </div>
+    <div class="audience-desc-panel" id="audience-desc-panel" style="display:none;"></div>
   </div>
 </section>
 

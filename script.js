@@ -532,7 +532,53 @@ function initAnimations() {
   initMarquee();
   initCounters();
   initCursorGlow();
+  initAudienceMobilePanel();
 
   // Refresh ScrollTrigger after all DOM is ready
   setTimeout(function() { ScrollTrigger.refresh(); }, 150);
+}
+
+/* ============================================
+   AUDIENCE MOBILE DESCRIPTION PANEL
+   ============================================ */
+function initAudienceMobilePanel() {
+  var panel = document.getElementById('audience-desc-panel');
+  if (!panel) return;
+
+  var cards = document.querySelectorAll('#audience-grid .audience-card');
+  if (!cards.length) return;
+
+  function isMobile() { return window.innerWidth <= 768; }
+
+  function activateCard(card) {
+    cards.forEach(function(c) { c.classList.remove('audience-card--active'); });
+    card.classList.add('audience-card--active');
+    var desc = card.getAttribute('data-desc') || card.querySelector('.audience-card__text').textContent;
+    panel.textContent = desc;
+    panel.style.opacity = '0';
+    panel.style.display = 'block';
+    requestAnimationFrame(function() { panel.style.opacity = '1'; });
+  }
+
+  function setupMobile() {
+    if (isMobile()) {
+      panel.style.display = 'block';
+      // Show first card desc by default
+      activateCard(cards[0]);
+
+      cards.forEach(function(card) {
+        card.addEventListener('mouseenter', function() { activateCard(card); });
+        card.addEventListener('touchstart', function(e) {
+          e.preventDefault();
+          activateCard(card);
+        }, { passive: false });
+      });
+    } else {
+      panel.style.display = 'none';
+      cards.forEach(function(c) { c.classList.remove('audience-card--active'); });
+    }
+  }
+
+  setupMobile();
+  window.addEventListener('resize', setupMobile);
 }
