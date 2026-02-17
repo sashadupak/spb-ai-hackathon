@@ -262,6 +262,8 @@ button { font: inherit; cursor: pointer; border: none; background: none; }
   display: flex; align-items: center; justify-content: center;
   margin-bottom: 48px;
 }
+/* Mobile tags: hidden on desktop */
+.hero__tags-mobile { display: none; }
 .hero__tag {
   padding: 6px 16px; border-radius: var(--radius-full);
   font-size: 0.82rem; font-weight: 500; color: var(--text-muted);
@@ -869,9 +871,17 @@ button { font: inherit; cursor: pointer; border: none; background: none; }
   .hero__title { font-size: clamp(2.2rem, 8vw, 3.5rem); }
   .hero__sub { font-size: 0.95rem; }
 
-  /* Hero drum tag: centered, full-width feel */
-  .hero__tags { justify-content: center; }
-  .hero__tag--drum { font-size: 0.8rem; }
+  /* Mobile: hide drum, show static 2-per-row tags */
+  .hero__tag-drum { display: none; }
+  .hero__tags-mobile {
+    display: flex; flex-wrap: wrap; gap: 8px; justify-content: center;
+  }
+  .hero__tags-mobile .hero__tag {
+    flex: 1 1 calc(50% - 4px);
+    max-width: calc(50% - 4px);
+    text-align: center;
+    box-sizing: border-box;
+  }
 
   /* Hero CTA */
   .hero__cta { flex-direction: column; align-items: stretch; gap: 12px; }
