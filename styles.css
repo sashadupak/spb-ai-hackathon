@@ -876,11 +876,8 @@ button { font: inherit; cursor: pointer; border: none; background: none; }
   }
   .mobile-slider-track {
     display: flex; gap: 12px; align-items: stretch;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    scroll-snap-stop: always;
+    overflow-x: hidden; /* JS controls position via scrollTo */
     overscroll-behavior-x: contain;
-    -webkit-overflow-scrolling: touch;
     scrollbar-width: none; padding-bottom: 8px;
     padding-right: 20px;
   }
@@ -888,7 +885,6 @@ button { font: inherit; cursor: pointer; border: none; background: none; }
   .mobile-slider-track .card,
   .mobile-slider-track .case-card {
     flex: 0 0 80vw; max-width: 300px;
-    scroll-snap-align: start;
     padding: 20px 18px;
     display: flex; flex-direction: column;
   }

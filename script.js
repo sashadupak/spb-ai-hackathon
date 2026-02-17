@@ -555,19 +555,43 @@ function initTagDrum() {
   if (count < 2) return;
 
   var current = 0;
-  var tagH = 32; // matches CSS height
+  var timer = null;
 
-  function advance() {
-    current = (current + 1) % count;
-    inner.style.transform = 'translateY(-' + (current * tagH) + 'px)';
+  function getTagH() {
+    // Measure actual rendered height of first tag
+    return tags[0].offsetHeight || 36;
   }
 
-  // Start interval
-  var timer = setInterval(advance, 5000);
+  function go(idx) {
+    current = ((idx % count) + count) % count;
+    var h = getTagH();
+    drum.style.height = h + 'px';
+    inner.style.transform = 'translateY(-' + (current * h) + 'px)';
+  }
 
-  // Pause on hover/focus
-  drum.addEventListener('mouseenter', function() { clearInterval(timer); });
-  drum.addEventListener('mouseleave', function() { timer = setInterval(advance, 5000); });
+  function advance() { go(current + 1); }
+
+  function startTimer() { timer = setInterval(advance, 5000); }
+  function stopTimer() { clearInterval(timer); }
+
+  // Init after layout is ready
+  function init() {
+    var h = getTagH();
+    drum.style.height = h + 'px';
+    startTimer();
+  }
+
+  // Wait until fonts/layout settled
+  if (document.readyState === 'complete') {
+    requestAnimationFrame(function() { requestAnimationFrame(init); });
+  } else {
+    window.addEventListener('load', function() {
+      requestAnimationFrame(function() { requestAnimationFrame(init); });
+    });
+  }
+
+  drum.addEventListener('mouseenter', stopTimer);
+  drum.addEventListener('mouseleave', startTimer);
 }
 
 /* ============================================
@@ -641,7 +665,7 @@ function initMobileSliders() {
     cards.forEach(function(card) { track.appendChild(card); });
     wrap.appendChild(track);
 
-    // Create dots
+    // Create dots (click handlers attached later in scrollTo)
     var dotsEl = document.createElement('div');
     dotsEl.className = 'mobile-slider-dots';
     var dots = [];
@@ -649,12 +673,6 @@ function initMobileSliders() {
       var dot = document.createElement('button');
       dot.className = 'mobile-slider-dot' + (i === 0 ? ' active' : '');
       dot.setAttribute('aria-label', 'Слайд ' + (i + 1));
-      (function(idx) {
-        dot.addEventListener('click', function() {
-          var cardWidth = track.children[idx].offsetWidth + 12;
-          track.scrollTo({ left: cardWidth * idx, behavior: 'smooth' });
-        });
-      })(i);
       dots.push(dot);
       dotsEl.appendChild(dot);
     }
@@ -664,15 +682,57 @@ function initMobileSliders() {
     grid.parentNode.removeChild(grid);
     wrap.parentNode.insertBefore(dotsEl, wrap.nextSibling);
 
-    // Update active dot on scroll
-    track.addEventListener('scroll', function() {
-      var scrollLeft = track.scrollLeft;
-      var cardWidth = track.children[0] ? track.children[0].offsetWidth + 12 : 1;
-      var activeIdx = Math.round(scrollLeft / cardWidth);
-      dots.forEach(function(d, i) {
-        d.classList.toggle('active', i === activeIdx);
-      });
+    // ---- Custom touch handler: exactly ±1 card per swipe ----
+    var activeIdx = 0;
+    var touchStartX = 0;
+    var touchStartY = 0;
+    var isScrollingVertically = null;
+
+    function cardW() {
+      return track.children[activeIdx] ? track.children[activeIdx].offsetWidth + 12 : 1;
+    }
+
+    function scrollTo(idx) {
+      idx = Math.max(0, Math.min(count - 1, idx));
+      activeIdx = idx;
+      track.scrollTo({ left: cardW() * idx, behavior: 'smooth' });
+      dots.forEach(function(d, i) { d.classList.toggle('active', i === idx); });
+    }
+
+    track.addEventListener('touchstart', function(e) {
+      touchStartX = e.touches[0].clientX;
+      touchStartY = e.touches[0].clientY;
+      isScrollingVertically = null;
     }, { passive: true });
+
+    track.addEventListener('touchmove', function(e) {
+      if (isScrollingVertically === null) {
+        var dx = Math.abs(e.touches[0].clientX - touchStartX);
+        var dy = Math.abs(e.touches[0].clientY - touchStartY);
+        isScrollingVertically = dy > dx;
+      }
+      if (!isScrollingVertically) {
+        e.preventDefault(); // block native scroll
+      }
+    }, { passive: false });
+
+    track.addEventListener('touchend', function(e) {
+      if (isScrollingVertically) return;
+      var dx = e.changedTouches[0].clientX - touchStartX;
+      var threshold = 40; // min swipe distance
+      if (dx < -threshold) {
+        scrollTo(activeIdx + 1);
+      } else if (dx > threshold) {
+        scrollTo(activeIdx - 1);
+      } else {
+        scrollTo(activeIdx); // snap back
+      }
+    }, { passive: true });
+
+    // Dot clicks
+    dots.forEach(function(d, i) {
+      d.addEventListener('click', function() { scrollTo(i); });
+    });
 
     // Store refs for teardown
     grid._sliderWrap = wrap;
