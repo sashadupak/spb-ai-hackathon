@@ -535,9 +535,39 @@ function initAnimations() {
   initAudienceMobilePanel();
   initMobileSliders();
   initCriteriaMobilePanel();
+  initTagDrum();
 
   // Refresh ScrollTrigger after all DOM is ready
   setTimeout(function() { ScrollTrigger.refresh(); }, 150);
+}
+
+/* ============================================
+   HERO TAG DRUM (slot-machine rotation)
+   ============================================ */
+function initTagDrum() {
+  var drum = document.getElementById('hero-tag-drum');
+  if (!drum) return;
+  var inner = drum.querySelector('.hero__tag-drum-inner');
+  if (!inner) return;
+
+  var tags = Array.from(inner.querySelectorAll('.hero__tag--drum'));
+  var count = tags.length;
+  if (count < 2) return;
+
+  var current = 0;
+  var tagH = 32; // matches CSS height
+
+  function advance() {
+    current = (current + 1) % count;
+    inner.style.transform = 'translateY(-' + (current * tagH) + 'px)';
+  }
+
+  // Start interval
+  var timer = setInterval(advance, 5000);
+
+  // Pause on hover/focus
+  drum.addEventListener('mouseenter', function() { clearInterval(timer); });
+  drum.addEventListener('mouseleave', function() { timer = setInterval(advance, 5000); });
 }
 
 /* ============================================
